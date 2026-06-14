@@ -283,7 +283,7 @@ with tab1:
                      color="Severity", color_discrete_map=color_map,
                      hole=0.4)
         fig.update_layout(height=340, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True, key="eda_severity_pie")
+        st.plotly_chart(fig, width="stretch", key="eda_severity_pie")
 
     with col2:
         # Accidents by province
@@ -293,7 +293,7 @@ with tab1:
                      title="Accidents by Province",
                      color="Province", color_discrete_sequence=px.colors.qualitative.Set2)
         fig.update_layout(height=340, margin=dict(t=40,b=10,l=10,r=10), showlegend=False)
-        st.plotly_chart(fig, use_container_width=True, key="eda_province_bar")
+        st.plotly_chart(fig, width="stretch", key="eda_province_bar")
 
     col3, col4 = st.columns(2)
 
@@ -305,7 +305,7 @@ with tab1:
                       title="Accidents by Hour of Day",
                       color_discrete_sequence=["#1A3A5C"])
         fig.update_layout(height=300, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True, key="eda_hourly_area")
+        st.plotly_chart(fig, width="stretch", key="eda_hourly_area")
 
     with col4:
         # Casualties by vehicle type
@@ -315,7 +315,7 @@ with tab1:
                      orientation="h", title="Total Casualties by Vehicle Type",
                      color="Number of Casualties", color_continuous_scale="Reds")
         fig.update_layout(height=300, margin=dict(t=40,b=10,l=10,r=10), coloraxis_showscale=False)
-        st.plotly_chart(fig, use_container_width=True, key="eda_vehicle_casualties")
+        st.plotly_chart(fig, width="stretch", key="eda_vehicle_casualties")
 
     col5, col6 = st.columns(2)
 
@@ -326,7 +326,7 @@ with tab1:
                      title="Severity Breakdown by Province",
                      color_discrete_map=color_map, barmode="stack")
         fig.update_layout(height=320, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True, key="eda_province_severity_stack")
+        st.plotly_chart(fig, width="stretch", key="eda_province_severity_stack")
 
     with col6:
         # Speed zone vs severity
@@ -335,7 +335,7 @@ with tab1:
                      title="Severity by Speed Zone",
                      color_discrete_map=color_map, barmode="group")
         fig.update_layout(height=320, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True, key="eda_speed_severity")
+        st.plotly_chart(fig, width="stretch", key="eda_speed_severity")
 
 # ════════════════════════════════════════════════════════════
 # TAB 2 — MODEL PERFORMANCE
@@ -360,7 +360,7 @@ with tab2:
         legend=dict(orientation="h", yanchor="bottom", y=1.02),
         margin=dict(t=60, b=20, l=20, r=20)
     )
-    st.plotly_chart(fig, use_container_width=True, key="model_comparison_bar")
+    st.plotly_chart(fig, width="stretch", key="model_comparison_bar")
 
     col1, col2, col3 = st.columns(3)
     for col, name in zip([col1, col2, col3], model_names):
@@ -376,7 +376,7 @@ with tab2:
             fig.update_layout(height=320, margin=dict(t=40,b=10,l=10,r=10),
                                coloraxis_showscale=False)
             safe_key = name.lower().replace(" ", "_").replace("-", "_")
-            st.plotly_chart(fig, use_container_width=True, key=f"cm_{safe_key}")
+            st.plotly_chart(fig, width="stretch", key=f"cm_{safe_key}")
 
     # Cross-validation
     st.markdown("---")
@@ -390,7 +390,7 @@ with tab2:
             "Test Accuracy": f"{results[name]['Accuracy']:.3f}",
             "Test F1": f"{results[name]['F1-Score']:.3f}",
         })
-    st.dataframe(pd.DataFrame(cv_data), use_container_width=True, hide_index=True)
+    st.dataframe(pd.DataFrame(cv_data), width="stretch", hide_index=True)
 
     # Feature importance
     st.markdown("---")
@@ -404,7 +404,7 @@ with tab2:
                  color="Importance", color_continuous_scale="Blues",
                  title="Feature Importance (Mean Decrease in Impurity)")
     fig.update_layout(height=380, margin=dict(t=40,b=10,l=10,r=10), coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True, key="feature_importance")
+    st.plotly_chart(fig, width="stretch", key="feature_importance")
 
 # ════════════════════════════════════════════════════════════
 # TAB 3 — RL AGENT
@@ -422,7 +422,7 @@ with tab3:
                         labels=dict(x="Action", y="MDP State", color="Q-Value"),
                         title="Learned Q-Values Heatmap")
         fig.update_layout(height=420, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True, key="rl_qvalue_heatmap")
+        st.plotly_chart(fig, width="stretch", key="rl_qvalue_heatmap")
 
     with col2:
         # Optimal policy table
@@ -436,7 +436,7 @@ with tab3:
                 "Q-Value": round(Q[s, best_a], 2),
             })
         policy_df = pd.DataFrame(policy_rows)
-        st.dataframe(policy_df, use_container_width=True, hide_index=True, height=390)
+        st.dataframe(policy_df, width="stretch", hide_index=True, height=390)
 
     # Convergence chart
     st.markdown("---")
@@ -454,7 +454,7 @@ with tab3:
                            xaxis_title="Episode", yaxis_title="Total Reward",
                            height=320, margin=dict(t=40,b=20,l=20,r=20),
                            legend=dict(orientation="h"))
-        st.plotly_chart(fig, use_container_width=True, key="rl_convergence")
+        st.plotly_chart(fig, width="stretch", key="rl_convergence")
 
     with col4:
         fig = go.Figure()
@@ -463,7 +463,7 @@ with tab3:
         fig.update_layout(title="Exploration Rate (ε) Decay",
                            xaxis_title="Episode", yaxis_title="Epsilon",
                            height=320, margin=dict(t=40,b=20,l=20,r=20))
-        st.plotly_chart(fig, use_container_width=True, key="rl_epsilon_decay")
+        st.plotly_chart(fig, width="stretch", key="rl_epsilon_decay")
 
     st.info("**MDP Design:** 9 states (3 road conditions × 3 frequency levels) · 4 actions · 5,000 training episodes · ε-greedy with exponential decay from 1.0 → 0.05")
 
@@ -499,7 +499,7 @@ with tab4:
         police      = st.slider("Police Force (Station ID)", 1, 5, 2)
         speed_limit = st.number_input("Speed Limit (km/h)", min_value=20, max_value=200, value=60, step=10)
 
-    if st.button("🔮 Predict Severity & Recommend Intervention", type="primary", use_container_width=True):
+    if st.button("🔮 Predict Severity & Recommend Intervention", type="primary"):
         try:
             prov_enc = le_province.transform([province])[0]
         except:
@@ -579,7 +579,7 @@ with tab4:
         fig.update_traces(textposition="outside")
         fig.update_layout(height=320, yaxis=dict(range=[0, 1.15], tickformat=".0%"),
                            showlegend=False, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True, key="predict_proba_bar")
+        st.plotly_chart(fig, width="stretch", key="predict_proba_bar")
 
 # ════════════════════════════════════════════════════════════
 # TAB 5 — RAW DATA
@@ -587,9 +587,18 @@ with tab4:
 with tab5:
     st.markdown('<div class="section-header">Dataset Explorer</div>', unsafe_allow_html=True)
     st.markdown(f"Showing **{len(df_f)}** of {len(df)} records (apply sidebar filters to narrow down).")
-    st.dataframe(df_f.reset_index(drop=True), use_container_width=True, height=500)
+
+    # Convert datetime/time columns to strings to avoid PyArrow serialization errors
+    df_display = df_f.reset_index(drop=True).copy()
+    for col in df_display.columns:
+        if df_display[col].dtype == "object":
+            df_display[col] = df_display[col].astype(str)
+        elif str(df_display[col].dtype) in ["datetime64[ns]", "timedelta64[ns]"]:
+            df_display[col] = df_display[col].astype(str)
+
+    st.dataframe(df_display, width="stretch", height=500)
 
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("**Dataset summary**")
-        st.dataframe(df_f.describe(include="all").T, use_container_width=True)
+        st.dataframe(df_display.describe(include="all").T, width="stretch")
