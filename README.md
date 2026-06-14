@@ -17,7 +17,8 @@ An interactive machine learning dashboard that predicts road accident severity a
 - Live prediction tool: input accident details → get severity prediction + recommended intervention
 
 ---
-
+![Dashboard Preview](dashboard_preview.png)
+![Dashboard Preview](dashboard_preview1.png)
 ---
 ## 🧠 Models & Methods
 
