@@ -283,7 +283,7 @@ with tab1:
                      color="Severity", color_discrete_map=color_map,
                      hole=0.4)
         fig.update_layout(height=340, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="eda_severity_pie")
 
     with col2:
         # Accidents by province
@@ -293,7 +293,7 @@ with tab1:
                      title="Accidents by Province",
                      color="Province", color_discrete_sequence=px.colors.qualitative.Set2)
         fig.update_layout(height=340, margin=dict(t=40,b=10,l=10,r=10), showlegend=False)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="eda_province_bar")
 
     col3, col4 = st.columns(2)
 
@@ -305,7 +305,7 @@ with tab1:
                       title="Accidents by Hour of Day",
                       color_discrete_sequence=["#1A3A5C"])
         fig.update_layout(height=300, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="eda_hourly_area")
 
     with col4:
         # Casualties by vehicle type
@@ -315,7 +315,7 @@ with tab1:
                      orientation="h", title="Total Casualties by Vehicle Type",
                      color="Number of Casualties", color_continuous_scale="Reds")
         fig.update_layout(height=300, margin=dict(t=40,b=10,l=10,r=10), coloraxis_showscale=False)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="eda_vehicle_casualties")
 
     col5, col6 = st.columns(2)
 
@@ -326,7 +326,7 @@ with tab1:
                      title="Severity Breakdown by Province",
                      color_discrete_map=color_map, barmode="stack")
         fig.update_layout(height=320, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="eda_province_severity_stack")
 
     with col6:
         # Speed zone vs severity
@@ -335,7 +335,7 @@ with tab1:
                      title="Severity by Speed Zone",
                      color_discrete_map=color_map, barmode="group")
         fig.update_layout(height=320, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="eda_speed_severity")
 
 # ════════════════════════════════════════════════════════════
 # TAB 2 — MODEL PERFORMANCE
@@ -360,7 +360,7 @@ with tab2:
         legend=dict(orientation="h", yanchor="bottom", y=1.02),
         margin=dict(t=60, b=20, l=20, r=20)
     )
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="model_comparison_bar")
 
     col1, col2, col3 = st.columns(3)
     for col, name in zip([col1, col2, col3], model_names):
@@ -375,7 +375,8 @@ with tab2:
                             title=f"Confusion Matrix")
             fig.update_layout(height=320, margin=dict(t=40,b=10,l=10,r=10),
                                coloraxis_showscale=False)
-            st.plotly_chart(fig, use_container_width=True)
+            safe_key = name.lower().replace(" ", "_").replace("-", "_")
+            st.plotly_chart(fig, use_container_width=True, key=f"cm_{safe_key}")
 
     # Cross-validation
     st.markdown("---")
@@ -403,7 +404,7 @@ with tab2:
                  color="Importance", color_continuous_scale="Blues",
                  title="Feature Importance (Mean Decrease in Impurity)")
     fig.update_layout(height=380, margin=dict(t=40,b=10,l=10,r=10), coloraxis_showscale=False)
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True, key="feature_importance")
 
 # ════════════════════════════════════════════════════════════
 # TAB 3 — RL AGENT
@@ -421,7 +422,7 @@ with tab3:
                         labels=dict(x="Action", y="MDP State", color="Q-Value"),
                         title="Learned Q-Values Heatmap")
         fig.update_layout(height=420, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="rl_qvalue_heatmap")
 
     with col2:
         # Optimal policy table
@@ -453,7 +454,7 @@ with tab3:
                            xaxis_title="Episode", yaxis_title="Total Reward",
                            height=320, margin=dict(t=40,b=20,l=20,r=20),
                            legend=dict(orientation="h"))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="rl_convergence")
 
     with col4:
         fig = go.Figure()
@@ -462,7 +463,7 @@ with tab3:
         fig.update_layout(title="Exploration Rate (ε) Decay",
                            xaxis_title="Episode", yaxis_title="Epsilon",
                            height=320, margin=dict(t=40,b=20,l=20,r=20))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="rl_epsilon_decay")
 
     st.info("**MDP Design:** 9 states (3 road conditions × 3 frequency levels) · 4 actions · 5,000 training episodes · ε-greedy with exponential decay from 1.0 → 0.05")
 
@@ -578,7 +579,7 @@ with tab4:
         fig.update_traces(textposition="outside")
         fig.update_layout(height=320, yaxis=dict(range=[0, 1.15], tickformat=".0%"),
                            showlegend=False, margin=dict(t=40,b=10,l=10,r=10))
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="predict_proba_bar")
 
 # ════════════════════════════════════════════════════════════
 # TAB 5 — RAW DATA
